@@ -38,14 +38,6 @@ def findNodeModulePath(baseDir, packageName) {
 def notifeeDir = findNodeModulePath(projectDir, "@notifee/react-native") ?: "$rootDir/../node_modules/@notifee/react-native"
 println ":${project.name} @notifee/react-native found at $notifeeDir"
 
-if (project.hasProperty('reactNativeProjects')) {
-  reactNativeProjects.each { dependent ->
-    project.evaluationDependsOn(dependent)
-  }
-} else {
-  project.evaluationDependsOn(':app')
-}
-
 project.ext {
   set('react-native', [
     versions: [
