@@ -158,11 +158,7 @@ struct {
   NSDictionary *notifeeNotification =
       response.notification.request.content.userInfo[kNotifeeUserInfoNotification];
 
-  // handle notification outside of notifee
-  if (notifeeNotification == nil) {
-    notifeeNotification = [NotifeeCoreUtil parseUNNotificationRequest:response.notification.request];
-  }
-
+  // we only care about notifications created through notifee
   if (notifeeNotification != nil) {
     if ([response.actionIdentifier isEqualToString:UNNotificationDismissActionIdentifier]) {
       // post DISMISSED event, only triggers if notification has a categoryId

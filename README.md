@@ -1,29 +1,26 @@
-<!-- markdownlint-disable MD033 -->
 <p align="center">
-  <a href="https://invertase.io">
-    <img width="140px" src="https://static.invertase.io/assets/notifee-logo.png"><br/>
+  <a href="https://notifee.app">
+    <img width="160px" src="https://notifee.app/logo-icon.png"><br/>
   </a>
-  <h3 align="center">Notifee Notifications</h3>
+  <h2 align="center">Notifee - React Native</h2>
 </p>
 
-<hr/>
-
-<!-- markdownlint-disable MD041 -->
-
+---
 
 A feature rich Android & iOS notifications library for React Native.
 
 [> Learn More](https://notifee.app/)
 
----
+## Installation
 
-> Notifee is going Noti-'free' - free and fully open source. [[Learn more]](https://invertase.io/blog/open-sourcing-notifee)
-
----
+```bash
+yarn add @notifee/react-native
+```
 
 ## Documentation
 
 - [Overview](https://notifee.app/react-native/docs/overview)
+- [Licensing](https://notifee.app/react-native/docs/license-keys)
 - [Reference](https://notifee.app/react-native/reference)
 
 ### Android
@@ -54,6 +51,69 @@ Below you'll find guides that cover the supported iOS features.
 | [Interaction](https://notifee.app/react-native/docs/ios/interaction)                 | Handle user interaction with your notifications. |                                                    |
 | [Permissions](https://notifee.app/react-native/docs/ios/permissions)                 | Request permission from your application users to display notifications. |                                                    |
 
+### Jest Testing
+
+To run jest tests after integrating this module, you will need to mock out the native parts of Notifee or you will get an error that looks like:
+
+```bash
+ ● Test suite failed to run
+
+    Notifee native module not found.
+
+      59 |     this._nativeModule = NativeModules[this._moduleConfig.nativeModuleName];
+      60 |     if (this._nativeModule == null) {
+    > 61 |       throw new Error('Notifee native module not found.');
+         |             ^
+      62 |     }
+      63 |
+      64 |     return this._nativeModule;
+```
+
+Add this to a setup file in your project e.g. `jest.setup.js`:
+
+If you don't already have a Jest setup file configured, please add the following to your Jest configuration file and create the new jest.setup.js file in project root:
+
+```js
+setupFiles: ['<rootDir>/jest.setup.js'],
+```
+
+You can then add the following line to that setup file to mock `notifee`:
+
+```js
+jest.mock('@notifee/react-native', () => require('@notifee/react-native/jest-mock'))
+```
+
+You will also need to add `@notifee` to `transformIgnorePatterns` in your config file (`jest.config.js`):
+
+```bash
+transformIgnorePatterns: [
+    'node_modules/(?!(jest-)?react-native|@react-native|@notifee)'
+]
+```
+
+### Detox Testing
+
+To utilise Detox's functionality to mock a local notification and trigger notifee's event handlers, you will need a payload with a key `__notifee_notification`:
+
+```js
+{
+  title: 'test',
+  body: 'Body',
+  payload: {
+    __notifee_notification: {
+      ios: {
+        foregroundPresentationOptions: {
+          banner: true,
+          list: true,
+        },
+      },
+      data: {}
+    },
+  },
+}
+```
+
+The important part is to make sure you have a `__notifee_notification` object under `payload` with the default properties.
 
 ## License
 
@@ -61,11 +121,11 @@ Below you'll find guides that cover the supported iOS features.
 
 ---
 
-<p align="center">
-  <a href="https://invertase.io/?utm_source=readme&utm_medium=footer&utm_campaign=docs.page">
-    <img width="75px" src="https://static.invertase.io/assets/invertase/invertase-rounded-avatar.png">
-  </a>
-  <p align="center">
-    Built and maintained by <a href="https://invertase.io/?utm_source=readme&utm_medium=footer&utm_campaign=docs.page">Invertase</a>.
+<p>
+  <img align="left" width="50px" src="https://static.invertase.io/assets/invertase-logo-small.png">
+  <p align="left">
+    Built and maintained with 💛 by <a href="https://invertase.io">Invertase</a>.
   </p>
 </p>
+
+---

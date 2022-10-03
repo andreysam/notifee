@@ -1,28 +1,58 @@
 {
   "name": "@notifee/react-native",
-  "version": "7.0.1",
+  "version": "5.7.0",
+  "author": "Invertase <oss@invertase.io> (http://invertase.io)",
+  "description": "Notifee - a feature rich notifications library for React Native.",
+  "main": "src/index.ts",
+  "scripts": {
+    "validate:all:js": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "validate:all:ts": "tsc --project ./",
+    "build": "genversion --es6 --semi src/version.ts && tsc",
+    "build:clean": "rimraf android/libs && rimraf android/build && rimraf ios/build && rimraf dist",
+    "build:watch": "tsc --watch",
+    "build:plugin": "rimraf plugin/build && tsc --build plugin",
+    "prepare": "yarn run build && yarn run build:plugin",
+    "prepublishOnly": "cd ../.. && yarn run build:core",
+    "format:android": "google-java-format --replace -i $(find . -type f -name \"*.java\")",
+    "format:ios": "npm_config_yes=true npx clang-format -i --glob=\"*/**/*.{h,cpp,m,mm}\" --style=Google"
+  },
   "devDependencies": {
-    "@react-native-community/eslint-config": "^3.0.1",
-    "@types/node": "^17.0.21",
+    "@expo/config-plugins": "^4.1.0",
+    "@types/react-native": "0.67.2",
     "@typescript-eslint/eslint-plugin": "^5.14.0",
     "@typescript-eslint/parser": "^5.14.0",
-    "clang-format": "^1.6.0",
     "eslint": "^7.32.0",
-    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-react": "^7.29.3",
-    "google-java-format": "^1.0.1",
-    "lerna": "^4.0.0",
-    "prettier": "^2.3.1",
+    "genversion": "^3.0.2",
+    "prettier": "^2.5.1",
     "rimraf": "^3.0.2",
-    "typedoc": "^0.19.2",
+    "typedoc": "^0.22.13",
+    "typedoc-plugin-markdown": "^3.11.14",
     "typescript": "^4.6.2"
   },
-  "resolutions": {
-    "@types/node": "^17.0.21"
+  "peerDependencies": {
+    "react-native": "*"
   },
-  "dependencies": {
-    "axios": "^0.26.0",
-    "shelljs": "^0.8.5"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/invertase/notifee"
+  },
+  "license": "Apache-2.0",
+  "keywords": [
+    "react",
+    "react-native",
+    "scheduling",
+    "channels",
+    "android",
+    "ios",
+    "firebase",
+    "fcm",
+    "notifee",
+    "notifications",
+    "onesignal"
+  ],
+  "publishConfig": {
+    "access": "public"
   }
 }

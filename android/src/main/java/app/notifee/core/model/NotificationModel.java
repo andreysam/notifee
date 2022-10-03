@@ -65,6 +65,12 @@ public class NotificationModel {
     return new Bundle();
   }
 
+  public @Nullable Bundle getShortcutData() {
+    Bundle data = mNotificationBundle.getBundle("shortcutData");
+    if (data != null) return (Bundle) data.clone();
+    return new Bundle();
+  }
+
   @KeepForSdk
   public Bundle toBundle() {
     return (Bundle) mNotificationBundle.clone();
