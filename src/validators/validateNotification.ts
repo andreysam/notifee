@@ -124,9 +124,6 @@ export default function validateNotification(notification: Notification): Notifi
     out.data = notification.data;
   }
 
-  out.shortcutData = notification.shortcutData;
-
-
   /**
    * android
    */
