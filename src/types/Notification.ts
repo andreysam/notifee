@@ -53,8 +53,6 @@ export interface Notification {
    */
   data?: { [key: string]: string };
 
-  shortcutData?: { id: string, name: string };
-
   /**
    * Android specific notification options. See the [`NotificationAndroid`](/react-native/reference/notificationandroid)
    * interface for more information and default options which are applied to a notification.

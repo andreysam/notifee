@@ -522,6 +522,17 @@ export default function validateAndroidNotification(
   }
 
   /**
+   * shortcutId
+   */
+  if (objectHasProperty(android, 'shortcutId')) {
+    if (!isString(android.shortcutId)) {
+      throw new Error("'notification.android.shortcutId' expected a string value.");
+    }
+
+    out.shortcutId = android.shortcutId;
+  }
+
+  /**
    * showTimestamp
    */
   if (objectHasProperty(android, 'showTimestamp')) {

@@ -97,35 +97,40 @@ class NotificationManager {
     Callable<NotificationCompat.Builder> builderCallable =
         () -> {
           Boolean hasCustomSound = false;
+          Context context = getApplicationContext();
+
           NotificationCompat.Builder builder =
-              new NotificationCompat.Builder(getApplicationContext(), androidModel.getChannelId());
+              new NotificationCompat.Builder(context, androidModel.getChannelId());
 
           // must always keep at top
           builder.setExtras(notificationModel.getData());
 
-          int targetSdkVersion =
-            ContextHolder.getApplicationContext().getApplicationInfo().targetSdkVersion;
+          int targetSdkVersion = context.getApplicationInfo().targetSdkVersion;
 
-          if (notificationModel.getData().containsKey("shortcutId") && targetSdkVersion >= Build.VERSION_CODES.N_MR1 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+          if (notificationModel.getData().containsKey("shortcutId") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             String id = notificationModel.getData().getString("shortcutId");
             String name = notificationModel.getData().getString("shortcutName");
 
-            ShortcutManager shortcutManager = getApplicationContext().getSystemService(ShortcutManager.class);
-            ShortcutInfo.Builder shortcutBuilder = new ShortcutInfo.Builder(getApplicationContext(), id)
-              .setShortLabel(name)
-              .setLongLived(true)
-              .setIntent(new Intent().setAction(getApplicationContext().getPackageName() + ".MainActivity"));
+            ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
 
-            if (targetSdkVersion >= Build.VERSION_CODES.P && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            ShortcutInfo.Builder shortcutBuilder = new ShortcutInfo.Builder(context, id)
+              .setShortLabel(name)
+              .setIntent(NotificationPendingIntent.createLaunchActivityIntent(
+                context,
+                notificationModel.getHashCode(),
+                NotificationAndroidPressActionModel.fromBundle(androidModel.getPressAction())
+              ));
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
               Person.Builder personBuilder = new Person.Builder();
               personBuilder.setBot(false);
               personBuilder.setName(name);
               shortcutBuilder.setPerson(personBuilder.build());
+
+              shortcutBuilder.setLongLived(true);
             }
 
             shortcutManager.pushDynamicShortcut(shortcutBuilder.build());
-
-            builder.setShortcutId(id);
           }
 
           builder.setDeleteIntent(

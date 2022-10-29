@@ -308,6 +308,17 @@ export interface NotificationAndroid {
   progress?: AndroidProgress;
 
   /**
+   * Connects shortcut to notification
+   *
+   * Setting this field is useful for creating conversation type notifications on Android 11+
+   *
+   * Shortcut must be created via different library.
+   *
+   * View the [Shortcuts](/react-native/docs/android/styles#messaging-shortcuts) documentation to learn more.
+   */
+  shortcutId?: string;
+
+  /**
    * Sets whether the `timestamp` provided is shown in the notification.
    *
    * Setting this field is useful for notifications which are more informative with a timestamp,
