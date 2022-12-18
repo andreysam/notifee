@@ -25,11 +25,8 @@ import static java.lang.Integer.parseInt;
 
 import android.app.Notification;
 import android.app.PendingIntent;
-import android.app.Person;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ShortcutInfo;
-import android.content.pm.ShortcutManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -40,7 +37,6 @@ import androidx.concurrent.futures.CallbackToFutureAdapter;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.app.RemoteInput;
-import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.graphics.drawable.IconCompat;
 import androidx.work.Data;
 import androidx.work.ExistingPeriodicWorkPolicy;
@@ -97,21 +93,19 @@ class NotificationManager {
     Callable<NotificationCompat.Builder> builderCallable =
         () -> {
           Boolean hasCustomSound = false;
-          Context context = getApplicationContext();
-
           NotificationCompat.Builder builder =
-              new NotificationCompat.Builder(context, androidModel.getChannelId());
+              new NotificationCompat.Builder(getApplicationContext(), androidModel.getChannelId());
 
           // must always keep at top
           builder.setExtras(notificationModel.getData());
-
-          int targetSdkVersion = context.getApplicationInfo().targetSdkVersion;
 
           builder.setDeleteIntent(
               ReceiverService.createIntent(
                   ReceiverService.DELETE_INTENT,
                   new String[] {"notification"},
                   notificationModel.toBundle()));
+          int targetSdkVersion =
+              ContextHolder.getApplicationContext().getApplicationInfo().targetSdkVersion;
           if (targetSdkVersion >= Build.VERSION_CODES.S
               && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             builder.setContentIntent(
@@ -207,7 +201,7 @@ class NotificationManager {
                 progress.getMax(), progress.getCurrent(), progress.getIndeterminate());
           }
 
-          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && androidModel.getShortcutId() != null) {
+          if (androidModel.getShortcutId() != null) {
             builder.setShortcutId(androidModel.getShortcutId());
           }
 
