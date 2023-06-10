@@ -85,6 +85,10 @@ dependencies {
   implementation 'androidx.work:work-runtime:2.8.0' // https://developer.android.com/jetpack/androidx/releases/work
   implementation 'org.greenrobot:eventbus:3.3.1' // https://github.com/greenrobot/EventBus/releases
   implementation 'androidx.lifecycle:lifecycle-process:2.3.1'
+
+  def room_version = '2.4.3' // https://developer.android.com/jetpack/androidx/releases/room
+  implementation "androidx.room:room-runtime:$room_version"
+  annotationProcessor "androidx.room:room-compiler:$room_version"
 }
 
 ReactNative.shared.applyPackageVersion()
