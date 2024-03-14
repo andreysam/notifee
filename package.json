@@ -4,18 +4,6 @@
   "author": "Invertase <oss@invertase.io> (http://invertase.io)",
   "description": "Notifee - a feature rich notifications library for React Native.",
   "main": "src/index.ts",
-  "scripts": {
-    "validate:all:js": "eslint . --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to .",
-    "validate:all:ts": "tsc --project ./",
-    "build": "genversion --es6 --semi src/version.ts && tsc",
-    "build:clean": "rimraf android/libs && rimraf android/build && rimraf ios/build && rimraf dist",
-    "build:watch": "tsc --watch",
-    "build:plugin": "rimraf plugin/build && tsc --build plugin",
-    "prepare": "yarn run build && yarn run build:plugin",
-    "prepublishOnly": "cd ../.. && yarn run build:core",
-    "format:android": "google-java-format --replace -i $(find . -type f -name \"*.java\")",
-    "format:ios": "npm_config_yes=true npx clang-format -i --glob=\"*/**/*.{h,cpp,m,mm}\" --style=Google"
-  },
   "devDependencies": {
     "@expo/config-plugins": "^4.1.0",
     "@types/react-native": "0.67.2",
